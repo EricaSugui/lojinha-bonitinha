@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+}
+
+.menu {
+    padding: 5%;
+    background-color:darkcyan;
+    color:aliceblue;
+    height: 100vh;
+}
+
+.main {
+    padding: 5%;
+    background-color: cornsilk;
+    height: 100vh;
+}
+footer {
+    padding: 50px;
+    position:absolute;
+    bottom:0;
+    width:100%;
+    background-color: darkslateblue;
+    color:aliceblue
+}

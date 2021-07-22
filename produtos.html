@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Lojinha</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        
+        <div class="menu col-3">
+
+          <h1>Lojinha Bonitinha</h1>
+          <br />
+          <div class="btn-group-vertical">
+            <a href="./index.html" class="btn btn-primary">Clientes</a>
+            <br />
+            <a href="./produtos.html" class="btn btn-primary">Produtos</a>
+          </div>
+
+        </div>
+
+        <div class="main col-9">
+
+          <h1>Cadastro de Produtos</h1>
+
+          <div class="row">
+            
+            <div class="col">
+              <label>Produto: </label>
+              <input name="produto" class="form-control" type="text" />
+            </div>
+            <div class="col">
+              <label>Preço:</label>
+              <input name="preco" class="form-control" type="number" />
+            </div>
+            <div class="col">
+              <label>Quant:</label>
+              <input name="qtd" class="form-control" type="number" />
+            </div>
+
+              <button class="col btn btn-primary mt-3" onclick="addItem()" >
+                Adicionar
+              </button>
+            </div>
+
+          <hr />
+
+          <div class="row">
+            <div class="col mx-auto">
+              <div class="list-group list-group-flush">
+                <h2>Items</h2>
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Item</th>
+                      <th scope="col">Preço</th>
+                      <th scope="col">Quantidade</th>
+                    </tr>
+                  </thead>
+                  <tbody class="products">
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      
+    </div>
+    <footer>
+        <p>Lojinha Bonitinha @2021. Todos os direitos não-reservados.</p>
+    </footer>
+  </body>
+  
+  <!-- Bootstrap JS -->
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    function addItem() {
+      // Pegando os valores dos campos
+      const produto = $('input[name=produto]').val();
+      const preco = $('input[name=preco]').val();
+      const qtd = $('input[name=qtd]').val();
+
+      // Criando objeto com dados dos inputs
+      const dataObj = { produto, preco, qtd };
+
+      /* 
+      adicionando ao localStorage
+      */
+      if (localStorage.getItem('products') === null) {
+        // Adicionando um array com um objeto
+        localStorage.setItem('products', JSON.stringify([dataObj]));
+      } else {
+        // Copiando o array existente no localstorage e adicionando o novo objeto ao final.
+        localStorage.setItem(
+          'products',
+          // O JSON.parse transforma a string em JSON novamente, o inverso do JSON.strigify
+          JSON.stringify([
+            ...JSON.parse(localStorage.getItem('products')),
+            dataObj
+          ])
+        );
+      }
+      
+      renderItem(dataObj);
+    }
+    let id = 0;
+    function renderItem(item) {
+      // Adicionando uma div com o item e a quantidade na div .products
+      id += 1;
+      $('.products').append(`
+            <tr>
+              <th scope="row">${id}</th>
+              <td>${item.produto}</td>
+              <td>R$ ${item.preco}</td>
+              <td>${item.qtd}</td>
+            </tr>
+        `);
+    }
+
+    function getProducts() {
+      // Pegando o array do localstorage
+      const products = JSON.parse(localStorage.getItem('products'));
+
+      // Para cada item do array, é renderizado no html
+      products.forEach(item => renderItem(item));
+    }
+
+    getProducts();
+  </script>
+</html>
